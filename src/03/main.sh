@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ./checkParam.sh
+. ./checkError.sh
 
-chmod +x print03.sh
-./print03.sh "$@"
+chmod +x printInfo.sh
+./printInfo.sh "$@"
