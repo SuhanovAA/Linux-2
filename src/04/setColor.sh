@@ -3,7 +3,7 @@
 config_file="config.cfg"
 
 if [ ! -f "$config_file" ]; then
-    echo "Ошибка: Конфигурационный файл не найден."
+    echo "Error: Config file not found"
     exit 1
 fi
 

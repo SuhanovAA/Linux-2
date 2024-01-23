@@ -41,6 +41,12 @@ case $task_number in
 		echo
 		repeat_check_task
 		;;
+	4)
+		echo "---TEST 04 RUN---"
+		04/main.sh
+		echo
+		repeat_check_task
+		;;
 	*)
 		exit 0
 		;;
