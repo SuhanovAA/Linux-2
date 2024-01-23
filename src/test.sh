@@ -18,7 +18,7 @@ function repeat_check_task {
 	esac
 }
 
-read -p "Who task check (1 - 5) ?" task_number
+read -p "Who task check (1 - 5) ? -> " task_number
 
 case $task_number in
 	1)
@@ -31,7 +31,13 @@ case $task_number in
 	2)
 		echo "---TEST 02 RUN---"
 		02/main.sh
-		
+		echo
+		repeat_check_task
+		;;
+	3)
+		echo "---TEST 03 RUN---"
+		read -p "03/main.sh " p1 p2 p3 p4
+		03/main.sh $p1 $p2 $p3 $p4
 		echo
 		repeat_check_task
 		;;
