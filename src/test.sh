@@ -2,7 +2,9 @@
 
 cd $(dirname $0)
 
-chmod +x 01/main.sh
+for ((i=1; i<5; i++)); do
+	chmod +x 0$i/*.sh
+done
 
 function repeat_check_task {
 	read -p "Conduct a test (y/n)?" answer
@@ -23,6 +25,13 @@ case $task_number in
 		echo "---TEST 01 RUN---"
 		read -p "01/main.sh " parametr
 		01/main.sh $parametr
+		echo
+		repeat_check_task
+		;;
+	2)
+		echo "---TEST 02 RUN---"
+		02/main.sh
+		
 		echo
 		repeat_check_task
 		;;
