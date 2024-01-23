@@ -2,7 +2,7 @@
 
 cd $(dirname $0)
 
-for ((i=1; i<5; i++)); do
+for ((i=1; i<=5; i++)); do
 	chmod +x 0$i/*.sh
 done
 
@@ -44,6 +44,13 @@ case $task_number in
 	4)
 		echo "---TEST 04 RUN---"
 		04/main.sh
+		echo
+		repeat_check_task
+		;;
+	5)
+		echo "---TEST 05 RUN---"
+		read -p "05/main.sh " parametr
+		05/main.sh $parametr
 		echo
 		repeat_check_task
 		;;
