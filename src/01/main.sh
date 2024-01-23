@@ -1,12 +1,13 @@
 #!/bin/bash
 
-if [ $# -eq 1 ]; then
-  re='^[0-9]+$'
-  if [[ $1 =~ $re ]]; then
-    echo "invalid input"
-  else
-    echo $1
-  fi
-else
-  echo "invalid input"
+if [ $# -ne 1 ]; then
+	echo "Error: must input one argument"
+	exit 1
 fi
+
+if [[ $1 =~ [[:digit:]] ]]; then
+    echo "Error: digit are not allowed"
+    exit 1
+fi
+
+echo $1

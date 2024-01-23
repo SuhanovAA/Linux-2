@@ -1,13 +1,14 @@
 #!/bin/bash
 
+cd $(dirname $0)
+
 if [ $# -ne 0 ]; then
-  echo "Error: invalid input"
-  exit 1
+	echo "Error: invalid input"
+	echo "You must not input parametrs"
+	exit 1
 else
-    # . ./config.cfg
-    . ./setColor.sh
-    . ./sysInfo.sh
-    . ./printInfo.sh "$@"
+	chmod +x *.sh
+	./printInfo.sh
 fi
 
 exit 0
