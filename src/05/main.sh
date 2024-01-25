@@ -15,10 +15,10 @@ if [[ "${1:${#1} - 1}" != "/" ]]; then
     exit 1
 fi
 
-# if [[ ! -d $1 ]]; then
-#     echo "Error: not correct path"
-#     exit 1
-# fi
+if [[ ! -d $1 ]]; then
+    echo "Error: not correct path"
+    exit 1
+fi
 
 chmod +x info.sh
 ./info.sh $1
