@@ -2,7 +2,7 @@
 
 path=$1
 
-start_time=`date +%s`
+start_time=$(date +%s)
 
 # 1 point -> Total number of folders
 total_folders=$(find "$path" -type d | wc -l)
@@ -13,7 +13,12 @@ total_folders=($(du -h $path | sort -nr | awk '{print $2}' | head -5))
 total_folders_size=($(du -h $path | sort -nr | awk '{print $1}' | head -5))
 echo "TOP 5 folders of maximum size arranged in descending order (path and size):"
 for i in {0..4}; do
-	echo "$[i+1] - ${total_folders[$i]}, ${total_folders_size[$i]}"
+	if [[ -n ${total_folders[$i]} ]]; then
+		echo "$[i+1] - ${total_folders[$i]}, ${total_folders_size[$i]}"
+	else
+		echo "There are no more files..."
+		break
+	fi
 done
 
 # 3 point -> Total number of files
@@ -44,27 +49,39 @@ echo "Symbolic links = $link_files"
 # 5 point -> Top 10 files
 max_file_10=$(find $path -type f -exec ls -sh {} \; | sort -hr | head -10)
 index=0
-echo "TOP 10 files of maximum size arranged id descending order (path, size and type):"
+echo "TOP 10 files of maximum size arranged in descending order (path, size and type):"
 while read -r line; do
-	path_f=$(echo "$line" | awk '{print $2}')
-	size_f=$(echo "$line" | awk '{print $1}')
-	type_f=$(echo "$line" | awk -F . '{print $NF}')
-	index=$((index + 1))
-	echo "$index - $path_f, $size_f, $type_f"
+	if [[ -n $line ]]; then
+		path_f=$(echo "$line" | awk '{print $2}')
+		size_f=$(echo "$line" | awk '{print $1}')
+		type_f=$(echo "$line" | awk -F . '{print $NF}')
+		index=$((index + 1))
+		echo "$index - $path_f, $size_f, $type_f"
+	else
+		echo "There are no more files..."
+		break
+	fi
 done <<<"$max_file_10"
 
 # 5 point -> Top 10 executable
-max_elf_10=$(find -type f -executable -exec ls -sh {} \; | sort -hr | head -10)
-index=0
+max_elf=$(find "$path" -type f -executable -exec ls -sh {} \; | sort -hr | head -10)
+index_elf=0
+echo "TOP 10 executable files of the maximum size arranged in descending order (path, size and MD5 hash of file):"
 while read -r line; do
-	path_elf=$(echo "$line" | awk '{print $2}')
-	size_elf=$(echo "$line" | awk '{print $1}')
-	hash_elf=$(echo "$line" | md5sum -b $path_elf | awk '{print $1}')
-	index=$((index + 1))
-	echo "$index - $path_elf, $size_elf, $hash_elf"
-done <<<'$max_elf_10'
+	if [[ -n $line ]]; then
+		path_elf=$(echo "$line" | awk '{print $2}')
+		size_elf=$(echo "$line" | awk '{print $1}')
+		hash_elf=$(echo $( md5sum "$path_elf" | awk '{print $1}' ))
+		index_elf=$((index_elf + 1))
+		echo "$index_elf - $path_elf, $size_elf, $hash_elf"
+	else
+		echo "There are no more files..."
+		break
+	fi
+done <<<"$max_elf"
 
-end_time=`date +%s.%N`
+end_time=$(date +%s.%N)
 
-runtime=$((end-start))
+#runtime=$(( $end_time - $start_time )) 
+runtime=$(echo "$end_time - $start_time" | bc -l)
 echo "Script execution time (in seconds) = $runtime"
